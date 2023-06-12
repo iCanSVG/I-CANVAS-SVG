@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>keyEvent</title>
+    <style>
+        .canvas{
+            border: 1px solid black;
+    }
+    </style>
+</head>
+<body>
+    <canvas class="canvas" width="600" height="400"></canvas>    
+    <script>
+        const canvas = document.querySelector('.canvas');
+      const ctx = canvas.getContext('2d');
+
+      // 원의 초기 위치
+      let x = canvas.width / 2;
+      let y = canvas.height / 2;
+
+      // 원의 이동 속도
+      const speed = 5;
+
+      // 키 상태를 저장하는 객체
+      const keys = {};
+
+      // 키보드 이벤트 리스너 등록
+      window.addEventListener('keydown', handleKeyDown);
+      window.addEventListener('keyup', handleKeyUp);
+
+      function handleKeyDown(event) {
+        // 눌러진 키의 상태를 true로 설정
+        keys[event.keyCode] = true;
+      }
+
+      function handleKeyUp(event) {
+        // 눌러진 키의 상태를 false로 설정
+        keys[event.keyCode] = false;
+      }
+
+      function animate() {
+        // 캔버스 지우기
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 방향키에 따라 원의 위치 업데이트
+        if (keys[37]) { // 왼쪽 화살표 키
+          x -= speed;
+        }
+        if (keys[38]) { // 위쪽 화살표 키
+          y -= speed;
+        }
+        if (keys[39]) { // 오른쪽 화살표 키
+          x += speed;
+        }
+        if (keys[40]) { // 아래쪽 화살표 키
+          y += speed;
+        }
+
+        // 원 그리기
+        ctx.beginPath();
+        ctx.arc(x, y, 30, 0, 2 * Math.PI);
+        ctx.fillStyle = '#FFC107';
+        ctx.fill();
+
+        // 애니메이션 반복
+        requestAnimationFrame(animate);
+      }
+
+      // 애니메이션 시작
+      animate();
+    </script>
+</body>
+</html>

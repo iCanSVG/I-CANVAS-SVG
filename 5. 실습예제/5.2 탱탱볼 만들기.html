@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>탱탱볼 만들기</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+          }
+          body{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            overflow: hidden;
+            filter: url(#gooey);
+          }
+          .gooey1 circle{
+            animation: anim 4s cubic-bezier(0.59,-0.54, 0.34, 0.43) infinite;
+          }
+          .gooey2 circle{
+            animation: anim 4s cubic-bezier(0.15, 0.93, 0.8, 0.47) infinite;
+          }
+          svg circle.back{
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(25px);
+          }
+          @keyframes anim {
+            50%{
+              cx: 50%
+            }
+          }
+    </style>
+</head>
+<body>
+    <svg width="100%" height="100vh">
+        <defs>
+          <filter id="gooey">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+            <feColorMatrix in="blur" result="gooey" values="
+                          1 0 0 0 0
+                          0 1 0 0 0
+                          0 0 1 0 0
+                          0 0 0 30 -7
+                          "/>
+            <feBlend in="SourceGraphic" in2="gooey"/>
+          </filter>
+      
+          <linearGradient id="gradient1" x1="0" y1="0" x2="0" y2="100%">
+            <stop offset="0%" stop-color="#74ebd5" />
+            <stop offset="100%" stop-color="#B4A1DB" />
+          </linearGradient>
+      
+          <linearGradient id="gradient2" x1="0" y1="0" x2="0" y2="100%">
+            <stop offset="0%" stop-color="#E9565D" />
+            <stop offset="100%" stop-color="#FFAF7B" />
+          </linearGradient>
+        </defs>
+                  
+        <g class="gooey1">
+          <circle cx="40%" cy="30%" r="1" fill="url(#gradient1)" />
+          <circle class="back" cx="40%" cy="30%" r="40" fill="url(#gradient1)" />
+          <circle cx="60%" cy="30%" r="1" fill="url(#gradient1)" />
+          <circle class="back" cx="60%" cy="30%" r="40" fill="url(#gradient1)" /> 
+         </g>
+                  
+         <g class="gooey2">
+           <circle cx="40%" cy="70%" r="1" fill="url(#gradient2)" />
+           <circle class="back" cx="40%" cy="70%" r="40" fill="url(#gradient2)" />
+           <circle cx="60%" cy="70%" r="1" fill="url(#gradient2)" />
+           <circle class="back" cx="60%" cy="70%" r="40" fill="url(#gradient2)" />
+        </g>
+      </svg>
+</body>
+</html>

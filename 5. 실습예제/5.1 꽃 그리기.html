@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>꽃 그리기</title>
+    <style>
+        body {
+            margin: 0;
+            height: 2000px;
+            background: linear-gradient(to bottom, green, yellow);
+        }
+        
+        svg {
+            position: fixed;
+            top: 50%;
+            width: 100%;
+            transform: translateY(-50%);
+        }
+        
+        #path {
+            stroke: white;
+            stroke-width: 10px;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        /* animation */
+        /* @keyframes drawFlower {
+            to {
+                stroke-dashoffset: 0;
+            }
+        } 
+        #path {
+            stroke-dasharray: 2687 2687;
+            stroke-dashoffset: 2687px;
+            animation: drawFlower 5s linear infinite;
+        }
+        */
+    </style>
+</head>
+<body>
+    <svg width="329" height="507" viewBox="0 0 329 507" fill="none">
+        <path id="path" d="M185.5 141.092H221.5C225 142.259 231.8 145.692 231 150.092C230 155.592 226 159.592 221.5 159.092C217 158.592 189.5 154.592 185.5 162.592C181.5 170.592 189.5 178.092 202.5 183.592C215.5 189.092 266.5 194.093 287 192.593C307.5 191.093 319 198.593 326 195.092C332.957 191.614 317.5 153.093 308.5 141.092C299.317 128.848 281.5 117.592 238 122.592C194.5 127.592 187.5 125.092 182 117.592C176.5 110.092 183.5 76.5925 189.5 75.5925C195.5 74.5925 193.5 92.5925 193.5 98.0925C193.5 103.592 194.5 112.592 198.5 115.092C202.5 117.592 236.5 98.5925 242.5 62.5925C248.5 26.5925 230 3.09247 221.5 1.09247C213 -0.907529 183 30.0925 177.5 40.0925C172 50.0925 168.5 57.5925 166 75.5925C163.5 93.5925 169 121.593 159.5 127.593C150 133.593 120.5 115.593 116 106.093C111.5 96.5925 111 88.0925 113.5 86.0925C116 84.0925 127 82.0925 133.5 94.0925C140 106.093 150.5 115.593 155 112.093C159.5 108.593 151 69.5925 133.5 56.0925C116 42.5925 103.5 37.0925 89.0001 34.0925C74.5001 31.0925 49.5001 29.5925 44.0001 34.0925C38.5001 38.5925 56.5001 42.0925 61.0001 56.0925C65.5001 70.0925 76.5 110.593 92 119.093C104.4 125.893 126.833 133.259 136.5 136.093C116 140.426 73.3 151.792 66.5 162.592C58 176.093 51.5 205.593 60.5 222.593C69.5 239.593 90.5001 253.593 113.5 240.593C136.5 227.593 152 202.093 150 187.593C148 173.093 141 169.593 131.5 174.593C122 179.593 110 195.093 106 192.593C102 190.093 105 172.592 113.5 162.592C122 152.593 147 143.592 155 150.092C163 156.593 159 228.593 158 237.093C157 245.593 143.5 294.593 161.5 301.593C179.5 308.593 199.5 271.093 216 261.093C232.5 251.093 276.5 230.093 276.5 227.093C276.5 224.093 221 216.593 198.5 237.093C176 257.593 161 278.093 159.5 325.093C158 372.093 121 363.093 110 355.093C99.1196 347.179 62.5 315.593 56 311.093C50.8523 307.529 41 299.093 1 282.593C12.3333 277.926 42.1 271.693 70.5 284.093C106 299.593 129.968 326.139 135.5 332.593C141.5 339.593 159 366.593 161.5 398.093C163.5 423.293 163.667 480.593 163.5 506.093" stroke="black"/>
+    </svg>
+    <script>
+        const path = document.querySelector("#path");
+        const pathLength = path.getTotalLength();
+        console.log(pathLength);
+        path.style.strokeDasharray = pathLength + " " + pathLength;
+        path.style.strokeDashoffset = pathLength;
+
+        function scrollHandler() {
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+            const scrollPercentage = scrollTop/(scrollHeight-clientHeight);
+            path.style.strokeDashoffset = pathLength * (1-scrollPercentage);
+        }
+        window.addEventListener("scroll", scrollHandler);
+    </script>
+</body>
+</html>

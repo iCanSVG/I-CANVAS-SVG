@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>세균악마게임</title>
+    <style>
+        @font-face {
+            font-family: 'GangwonEdu_OTFBoldA';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+                background-color: #a04ba0;
+         
+        }
+              
+              .container {
+                width: 1080px;
+                margin: 100px auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+              }
+        
+              #myCanvas {
+                border: 3px solid black;
+                background-color: #fff;
+              }
+        
+              h1 {
+                color: white;
+                font-size: 55px;
+                font-family: 'GangwonEdu_OTFBoldA';
+              }
+        
+              #remain-enemy {
+                margin-top: 30px;
+                font-size: 32px;
+                font-family: 'GangwonEdu_OTFBoldA';
+                color: white;
+              }
+        
+              button {
+                position: absolute;
+                top: 410px;
+                font-family: 'GangwonEdu_OTFBoldA';
+                width: 200px;
+                padding: 20px;
+                font-size: 24px;
+                border-radius: 40px;
+                border: none;
+                box-shadow: 10px 10px 10px grey;
+                background-color: #ccc;
+              }
+    </style>
+</head>
+<body>
+    <body>
+        <div class="container">
+          <h1>세균악마를 잡아라!!</h1>
+          <canvas id="myCanvas" width="400" height="400"></canvas>
+          <img id="enemyImg" src="https://github.com/Jaharim/canvas-catch-germ-devil-game/blob/1e5a7c431e3fac301d51694c80bfc8b2fef2e821/germ.png?raw=true" style="display: none" />
+          <p id="remain-enemy" style="display: none">
+            남아있는 세균악마의 수: <span id="enemy-count"></span>
+          </p>
+    
+          <button id="start-btn">게임 시작</button>
+          <button id="restart-btn" style="display: none">다시 시작</button>
+        </div>
+      </body>
+    
+    <script>
+        // 캔버스 가져오기
+      var canvas = document.getElementById('myCanvas');
+      var ctx = canvas.getContext('2d');
+
+      // 세균악마 생성하기
+      var enemies = [];
+      for (var i = 0; i < 5; i++) {
+        enemies.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: 30,
+          speed: 0.5,
+          dx: Math.random() * 4 - 2,
+          dy: Math.random() * 4 - 2,
+          alive: true,
+        });
+      }
+
+      // 이미지 불러오기
+      var enemyImg = new Image();
+      enemyImg.src = 'https://github.com/Jaharim/canvas-catch-germ-devil-game/blob/1e5a7c431e3fac301d51694c80bfc8b2fef2e821/germ.png?raw=true';
+      enemyImg.onload = function () {
+        // 이미지가 로드되면 실행될 코드
+        for (var i = 0; i < enemies.length; i++) {
+          enemies[i].img = enemyImg;
+        }
+      };
+
+      function update() {
+        // 캔버스 지우기
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 모든 세균악마 이동하기
+        var aliveEnemies = 0;
+
+        // 남아있는 세균악마의 수
+        for (var i = 0; i < enemies.length; i++) {
+          if (enemies[i].alive) {
+            aliveEnemies++;
+
+            // 세균악마 위치 변경하기
+            enemies[i].x += enemies[i].dx * enemies[i].speed;
+            enemies[i].y += enemies[i].dy * enemies[i].speed;
+
+            // 세균악마가 화면을 벗어난 경우 방향 바꾸기
+            if (enemies[i].x < 0 || enemies[i].x > canvas.width) {
+              enemies[i].dx = -enemies[i].dx;
+            }
+            if (enemies[i].y < 0 || enemies[i].y > canvas.height) {
+              enemies[i].dy = -enemies[i].dy;
+            }
+
+            // 세균악마 그리기
+            ctx.drawImage(
+              enemies[i].img,
+              enemies[i].x - enemies[i].r,
+              enemies[i].y - enemies[i].r,
+              enemies[i].r * 2,
+              enemies[i].r * 2
+            );
+          }
+        }
+
+        // 세균악마의 속도 계산하기
+        var speedFactor = 1 - aliveEnemies / enemies.length;
+        var speed = 1 + speedFactor * 1;
+
+        // 모든 세균악마의 속도 설정하기
+        for (var i = 0; i < enemies.length; i++) {
+          enemies[i].speed = speed;
+        }
+
+        // 남아있는 세균악마의 수 업데이트하기
+        document.getElementById('enemy-count').textContent = aliveEnemies;
+
+        // 게임 종료 체크하기
+        if (aliveEnemies === 0) {
+          // 다시하기 버튼 보이기
+          document.getElementById('restart-btn').style.display = 'block';
+        }
+      }
+
+      canvas.addEventListener('click', function (e) {
+        // 클릭 위치 구하기
+        var x = e.clientX - canvas.offsetLeft;
+        var y = e.clientY - canvas.offsetTop;
+
+        // 세균악마가 있는 위치를 클릭한 경우 세균악마 제거하기
+        for (var i = 0; i < enemies.length; i++) {
+          if (enemies[i].alive) {
+            var dx = enemies[i].x - x;
+            var dy = enemies[i].y - y;
+            var distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < enemies[i].r) {
+              enemies[i].alive = false;
+              break;
+            }
+          }
+        }
+      });
+
+      document.querySelector('#start-btn').addEventListener('click', () => {
+        document.getElementById('start-btn').style.display = 'none';
+        document.getElementById('remain-enemy').style.display = 'block';
+        gameInterval = setInterval(update, 10);
+      });
+
+      //   var gameInterval = setInterval(update, 10);
+
+      document.querySelector('#restart-btn').addEventListener('click', () => {
+        clearInterval(gameInterval);
+        for (var i = 0; i < enemies.length; i++) {
+          enemies[i].alive = true;
+        }
+        document.getElementById('restart-btn').style.display = 'none';
+        gameInterval = setInterval(update, 10);
+      });
+
+      document.querySelector('#start-btn').addEventListener('click', () => {
+        setInterval(update, 10);
+      });
+    </script>
+</body>
+</html>

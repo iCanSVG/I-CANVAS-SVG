@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로더 만들기</title>
+    <style>
+        * {
+            background: white;
+          }
+          
+          .vane {
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          
+          @keyframes spin {
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+          
+          .vane svg {
+            animation: spin 1500ms linear infinite;
+            transform-origin: center;
+          }
+    </style>
+</head>
+<body>
+    <div class="vane">
+        <svg
+          width="100"
+          height="100"
+          viewBox="0 0 200 200"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M99.4886 0L49 55.4608L104.461 105.949L154.949 50.4886L154.893 50.4371L192.496 9.13101L99.8977 0.372487L99.4886 0Z"
+            fill="#FF6F6F"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M109.007 211.949L159.496 156.489L104.035 106L53.5463 161.461L53.6028 161.512L16 202.818L108.598 211.577L109.007 211.949Z"
+            fill="#B2FF50"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M0.0499469 112.007L55.4608 162.55L106.004 107.14L50.5934 56.5962L50.5418 56.6527L9.27296 19.009L0.422838 111.598L0.0499469 112.007Z"
+            fill="#FFCC17"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M209.491 101.88L154.365 51.026L103.512 106.152L158.638 157.006L158.689 156.95L199.746 194.825L209.116 102.287L209.491 101.88Z"
+            fill="#4E95CA"
+          />
+          <circle cx="102.5" cy="106.5" r="22.5" fill="white" />
+        </svg>
+      </div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>moveSquare</title>
+    <style>
+        .canvas{
+            border: 1px solid black;
+    }
+    </style>
+</head>
+<body>
+    <canvas class="canvas" width="300" height="300"></canvas>
+    <script>
+        const canvas = document.querySelector('.canvas');
+      const ctx = canvas.getContext('2d');
+              
+      ctx.fillStyle = '#F0645C';
+      ctx.fillRect(10,10, 100, 100);
+      
+      let x = 10;
+      let y = 10;
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        x += 1.25;
+        y += 1.25;
+
+        ctx.fillStyle = '#30A4A4';
+        ctx.fillRect(x, y, 50, 50);
+
+        requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>

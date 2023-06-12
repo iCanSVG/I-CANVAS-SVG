@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>폭죽놀이</title>
+    <style>
+        canvas {
+            background-color: black; /* 배경을 검정색으로 설정 */
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="800" height="600"></canvas>    
+    <script>
+        const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      let fireworks = [];
+
+      function createFirework(x, y) {
+        let numParticles = Math.floor(Math.random() * 40) + 10; // 10부터 49개의 폭죽 파티클 생성
+        let colors = ['#FF00FF', '#00FFFF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFFF00']; // 네온사인 색상 배열
+        let color = colors[Math.floor(Math.random() * colors.length)]; // 랜덤한 색상 선택
+
+        for (let i = 0; i < numParticles; i++) {
+          let angle = Math.PI * 2 * (i / numParticles);
+          let radius = Math.random() * 5 + 8; // 폭죽 파티클의 반지름
+          let particle = {
+            x: x,
+            y: y,
+            size: radius,
+            speedX: (Math.cos(angle) * radius) / 11,
+            speedY: (Math.sin(angle) * radius) / 11,
+            color: color,
+            lifespan: Math.random() * 600 + 90, // 폭죽 파티클의 지속시간 설정 (90에서 150 프레임)
+          };
+          fireworks.push(particle);
+        }
+      }
+
+      function update() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < fireworks.length; i++) {
+          let firework = fireworks[i];
+          firework.x += firework.speedX;
+          firework.y += firework.speedY;
+          firework.size *= 0.96; // 크기 감소
+          firework.lifespan--;
+
+          // fade-out 효과 적용
+          let alpha = firework.lifespan / 150; // 최대 수명을 기준으로 알파값 계산
+          ctx.globalAlpha = alpha;
+
+          ctx.beginPath();
+          ctx.moveTo(firework.x, firework.y - firework.size);
+          ctx.lineTo(firework.x + firework.size, firework.y + firework.size);
+          ctx.lineTo(firework.x - firework.size, firework.y);
+          ctx.lineTo(firework.x + firework.size, firework.y - firework.size);
+          ctx.lineTo(firework.x - firework.size, firework.y + firework.size);
+          ctx.closePath();
+          ctx.fillStyle = firework.color;
+          ctx.fill();
+
+          if (firework.size <= 1 || firework.lifespan <= 0) {
+            fireworks.splice(i, 1);
+            i--;
+          }
+        }
+
+        ctx.globalAlpha = 1; // 알파값 초기화
+
+        requestAnimationFrame(update);
+      }
+
+      function createRandomFirework() {
+        let x = Math.random() * canvas.width; // 랜덤한 x 좌표
+        let y = Math.random() * canvas.height; // 랜덤한 y 좌표
+        createFirework(x, y);
+        setTimeout(createRandomFirework, Math.random() * 1000); // 1초 사이의 랜덤한 시간 후에 다음 불꽃 생성
+      }
+
+ createRandomFirework();
+      update();
+    </script>
+</body>
+</html>
